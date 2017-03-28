@@ -39,6 +39,7 @@ public class CorrelationIdConfig {
     @Value("${serviceId}")
     private String serviceId;
 
+    // Set correlation Id in outgoing request to downstream service API	
     @Bean
     public ClientHttpRequestInterceptor interceptor() {
         return (httpRequest, bytes, clientHttpRequestExecution) -> {
@@ -53,6 +54,7 @@ public class CorrelationIdConfig {
         };
     }
 
+    // Use rest template that sets correlation Id for outgoing calls to downstream API calls
     @Bean
     public RestTemplate restTemplate() {
         RestTemplate template = new RestTemplate();
@@ -60,6 +62,7 @@ public class CorrelationIdConfig {
         return template;
     }
 
+    // Use correlation information coming in incoming request to set the log's MDC context
     @Bean
     public Filter correlationIdFilter () {
         return new AbstractRequestLoggingFilter() {
